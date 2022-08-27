@@ -1,0 +1,29 @@
+# docker compose up --scale www01=3
+version: '3.5'
+services:
+  nginx-lb:
+    networks:
+      - example
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - www01
+      - www02
+    ports:
+      - "4000:4000"
+  www01:
+    image: echo:latest
+    networks:
+      - example
+    ports:
+      - "9080"
+  www02:
+    image: echo:latest
+    networks:
+      - example
+    ports:
+      - "9080"
+
+networks:
+    example:
